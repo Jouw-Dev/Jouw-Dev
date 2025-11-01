@@ -13,17 +13,13 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Generate GitHub Stats
-        env:
-          GITHUB_TOKEN: ${{ secrets.PAT_1 }}
         run: |
-          curl -H "Authorization: token $GITHUB_TOKEN" \
-              -o stats.svg \
-              "https://github-readme-stats.vercel.app/api?username=jouw-dev&show_icons=true&count_private=true&include_all_commits=true&theme=codeSTACKr"
+          curl -o stats.svg "https://github-readme-stats.vercel.app/api?username=jouw-dev&show_icons=true&count_private=true&include_all_commits=true&theme=codeSTACKr" -H "Authorization: token ${{ secrets.PAT_1 }}"
 
       - name: Commit and push
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
           git add stats.svg
-          git diff --quiet && git diff --staged --quiet || git commit -m "Update GitHub stats"
+          git commit -m "Update GitHub stats"
           git push
